@@ -39,8 +39,8 @@ gherkin: []
 paths:
     tests: {{baseDir}}
     output: {{baseDir}}/_output
-    data: {{baseDir}}/_data
-    support: {{baseDir}}/_support
+    data: {{baseDir}}/TestSupport/Data
+    support: {{baseDir}}/TestSupport
     envs: {{baseDir}}/_envs
 
 settings:
@@ -89,8 +89,8 @@ EOF;
         $url = $this->ask("Start url for tests", "http://localhost");
 
         $this->createEmptyDirectory($outputDir = $dir . DIRECTORY_SEPARATOR . '_output');
-        $this->createEmptyDirectory($dir . DIRECTORY_SEPARATOR . '_data');
-        $this->createDirectoryFor($supportDir = $dir . DIRECTORY_SEPARATOR . '_support');
+        $this->createDirectoryFor($supportDir = $dir . DIRECTORY_SEPARATOR . 'TestSupport');
+        $this->createEmptyDirectory($supportDir . DIRECTORY_SEPARATOR . 'Data');
         $this->createDirectoryFor($supportDir . DIRECTORY_SEPARATOR . '_generated');
         $this->gitIgnore($outputDir);
         $this->gitIgnore($supportDir . DIRECTORY_SEPARATOR . '_generated');

@@ -23,10 +23,11 @@ EOF;
 
     protected $namespace;
     protected $name;
+    private $settings;
 
-    public function __construct($name, $namespace = '')
+    public function __construct($settings, $name)
     {
-        $this->namespace = $namespace;
+        $this->settings = $settings;
         $this->name = $name;
     }
 

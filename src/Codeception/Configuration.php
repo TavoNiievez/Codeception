@@ -67,6 +67,7 @@ class Configuration
      */
     public static $defaultConfig = [
         'actor_suffix'=> 'Tester',
+        'support_namespace' => null,
         'namespace'  => '',
         'include'    => [],
         'paths'      => [],
@@ -117,6 +118,7 @@ class Configuration
         'path'        => null,
         'extends'     => null,
         'namespace'   => null,
+        'support_namespace' => null,
         'groups'      => [],
         'formats'     => [],
         'shuffle'     => false,
@@ -252,7 +254,7 @@ class Configuration
             self::$envsDir = $config['paths']['envs'];
         }
 
-        Autoload::addNamespace(self::$config['namespace'], self::supportDir());
+        Autoload::addNamespace(self::$config['namespace'] . '\\' . self::$config['support_namespace'] , self::supportDir());
 
         self::loadBootstrap($config['bootstrap'], self::testsDir());
         self::loadSuites();
@@ -320,7 +322,7 @@ class Configuration
 
         // load global config
         $globalConf = $config['settings'];
-        foreach (['modules', 'coverage', 'namespace', 'groups', 'env', 'gherkin', 'extensions'] as $key) {
+        foreach (['modules', 'coverage', 'support_namespace', 'namespace', 'groups', 'env', 'gherkin', 'extensions'] as $key) {
             if (isset($config[$key])) {
                 $globalConf[$key] = $config[$key];
             }

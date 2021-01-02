@@ -15,24 +15,11 @@ namespace {{namespace}};
 
 class {{class}}
 {
-    // include url of current page
-    public static \$URL = '';
-
     /**
      * Declare UI map for this page here. CSS or XPath allowed.
-     * public static \$usernameField = '#username';
-     * public static \$formSubmitButton = "#mainForm input[type=submit]";
+     * public \$usernameField = '#username';
+     * public \$formSubmitButton = "#mainForm input[type=submit]";
      */
-
-    /**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: Page\\Edit::route('/123-post');
-     */
-    public static function route(\$param)
-    {
-        return static::\$URL.\$param;
-    }
 
 {{actions}}
 }
@@ -46,8 +33,9 @@ EOF;
     protected \${{actor}};
 
     public function __construct(\\{{actorClass}} \$I)
-    {
+    {        
         \$this->{{actor}} = \$I;
+        // you can inject other page objects here as well
     }
 
 EOF;
@@ -61,7 +49,7 @@ EOF;
     {
         $this->settings = $settings;
         $this->name = $this->getShortClassName($name);
-        $this->namespace = $this->getNamespaceString($this->settings['namespace'] . '\\Page\\' . $name);
+        $this->namespace = $this->getNamespaceString($this->supportNamespace() . '\\Page\\' . $name);
     }
 
     public function produce()
@@ -80,10 +68,7 @@ EOF;
         }
 
         $actor = lcfirst($this->settings['actor']);
-        $actorClass = $this->settings['actor'];
-        if (!empty($this->settings['namespace'])) {
-            $actorClass = rtrim($this->settings['namespace'], '\\') . '\\' . $actorClass;
-        }
+        $actorClass = $this->supportNamespace() . '\\' . $this->settings['actor'];
 
         return (new Template($this->actionsTemplate))
             ->place('actorClass', $actorClass)

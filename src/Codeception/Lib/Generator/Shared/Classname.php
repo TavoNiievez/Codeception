@@ -8,4 +8,22 @@ trait Classname
         $classname = preg_replace('~\.php$~', '', $classname);
         return preg_replace("~$suffix$~", '', $classname);
     }
+
+    protected function supportNamespace()
+    {
+        if (!isset($this->settings)) {
+            return "";
+        }
+
+        $namespace = "";
+
+        if ($this->settings['namespace']) {
+            $namespace .= '\\' . $this->settings['namespace'];
+        }
+
+        if ($this->settings['support_namespace']) {
+            $namespace .= '\\' . $this->settings['support_namespace'];
+        }
+        return rtrim($namespace, '\\');
+    }
 }

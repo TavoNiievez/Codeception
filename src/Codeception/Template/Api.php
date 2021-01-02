@@ -23,8 +23,8 @@ suites:
 paths:
     tests: {{baseDir}}
     output: {{baseDir}}/_output
-    data: {{baseDir}}/_data
-    support: {{baseDir}}/_support
+    data: {{baseDir}}/TestSupport/Data
+    support: {{baseDir}}/TestSupport
 
 settings:
     shuffle: false

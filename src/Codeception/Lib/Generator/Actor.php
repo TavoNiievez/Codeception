@@ -3,12 +3,15 @@ namespace Codeception\Lib\Generator;
 
 use Codeception\Configuration;
 use Codeception\Lib\Di;
+use Codeception\Lib\Generator\Shared\Classname;
 use Codeception\Lib\ModuleContainer;
 use Codeception\Util\ReflectionHelper;
 use Codeception\Util\Template;
 
 class Actor
 {
+    use Classname;
+
     protected $template = <<<EOF
 <?php
 {{hasNamespace}}
@@ -53,7 +56,7 @@ EOF;
 
     public function produce()
     {
-        $namespace = rtrim($this->settings['namespace'], '\\');
+        $namespace = $this->supportNamespace();
 
         if (!isset($this->settings['actor']) && isset($this->settings['class_name'])) {
             $this->settings['actor'] = $this->settings['class_name'];
