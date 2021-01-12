@@ -10,6 +10,7 @@ class v5Cest
         $I->executeCommand('g:suite Api');
         $I->executeCommand('g:cest Api Resource');
         $I->executeCommand('g:test Api Resource');
+        $I->executeCommand('g:feature Acceptance UserStory');
         $I->executeCommand('g:helper Api');
         $I->executeCommand('run');
         $I->seeInShellOutput('OK ');
@@ -36,7 +37,11 @@ class v5Cest
         $I->openFile('tests/Api/ResourceTest.php');
         $I->seeInThisFile('namespace Tests\\Api;');
         $I->seeInThisFile('use \Tests\TestSupport\ApiTester;');
-        $I->seeInThisFile('protected ApiTester $tester;');
+        if ((PHP_MAJOR_VERSION == 7) && (PHP_MINOR_VERSION < 4)) {
+            $I->seeInThisFile('protected $tester;');
+        } else {
+            $I->seeInThisFile('protected ApiTester $tester;');
+        }
     }
 
     public function bootstrapCodecept5WithNamespace(CliGuy $I)
@@ -45,6 +50,7 @@ class v5Cest
         $I->cleanDir('.');
         $I->executeCommand('bootstrap --namespace Codecept5');
         $I->executeCommand('g:suite Api');
+        $I->executeCommand('g:feature Acceptance UserStory');
         $I->executeCommand('g:cest Api Resource');
         $I->executeCommand('g:test Api Resource');
         $I->executeCommand('g:helper Api');
@@ -74,7 +80,11 @@ class v5Cest
         $I->openFile('tests/Api/ResourceTest.php');
         $I->seeInThisFile('namespace Codecept5\\Api;');
         $I->seeInThisFile('use \Codecept5\TestSupport\ApiTester;');
-        $I->seeInThisFile('protected ApiTester $tester;');
+        if ((PHP_MAJOR_VERSION == 7) && (PHP_MINOR_VERSION < 4)) {
+            $I->seeInThisFile('protected $tester;');
+        } else {
+            $I->seeInThisFile('protected ApiTester $tester;');
+        }
 
     }
 

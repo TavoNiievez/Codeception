@@ -43,7 +43,12 @@ class GenerateTestTest extends BaseCommandRunner
         $this->execute(array('suite' => 'shire', 'class' => 'HallUnderTheHillTest.php'));
         $this->assertEquals('tests/shire/HallUnderTheHillTest.php', $this->filename);
         $this->assertStringContainsString('class HallUnderTheHillTest extends \Codeception\Test\Unit', $this->content);
-        $this->assertStringContainsString('protected HobbitGuy $tester;', $this->content);
+        if ((PHP_MAJOR_VERSION == 7) && (PHP_MINOR_VERSION < 4)) {
+            $this->assertStringContainsString('/** @var HobbitGuy', $this->content);
+            $this->assertStringContainsString('protected $tester;', $this->content);
+        } else {
+            $this->assertStringContainsString('protected HobbitGuy $tester;', $this->content);
+        }
         $this->assertStringContainsString('Test was created in tests/shire/HallUnderTheHillTest.php', $this->output);
     }
 
