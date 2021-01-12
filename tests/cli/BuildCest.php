@@ -41,7 +41,7 @@ class BuildCest
         $I->wantToTest('generate typehints with generated actions');
 
         $cliHelperContents = file_get_contents(codecept_root_dir('tests/support/CliHelper.php'));
-        $cliHelperContents = str_replace('public function grabFromOutput($regex)', 'public function grabFromOutput($regex): int', $cliHelperContents);
+        $cliHelperContents = str_replace('public function grabFromOutput($regex)', 'public function grabFromOutput($regex): string', $cliHelperContents);
         file_put_contents(codecept_root_dir('tests/support/CliHelper.php'), $cliHelperContents);
 
         $I->runShellCommand('php codecept build');
@@ -51,7 +51,7 @@ class BuildCest
         $I->seeInThisFile('use _generated\CliGuyActions');
         $I->seeFileFound('CliGuyActions.php', 'tests/support/_generated');
         $I->openFile(codecept_root_dir('tests/support/CliHelper.php'));
-        $I->seeInThisFile('public function grabFromOutput($regex): int');
+        $I->seeInThisFile('public function grabFromOutput($regex): string');
         $I->seeInThisFile('return $match[1]');
     }
     

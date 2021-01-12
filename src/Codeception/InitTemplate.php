@@ -41,12 +41,17 @@ abstract class InitTemplate
     /**
      * @var string
      */
-    protected $namespace = '';
+    protected $namespace = 'Tests';
 
     /**
      * @var string
      */
     protected $actorSuffix = 'Tester';
+
+    /**
+     * @var string
+     */
+    protected $supportNamespace = 'TestSupport';
 
     /**
      * @var string
@@ -181,14 +186,14 @@ abstract class InitTemplate
      * @param $name
      * @param $directory
      */
-    protected function createHelper($name, $directory)
+    protected function createHelper($name, $directory, $settings = [])
     {
         $file = $this->createDirectoryFor(
             $dir = $directory . DIRECTORY_SEPARATOR . "Helper",
             "$name.php"
         ) . "$name.php";
 
-        $gen = new Lib\Generator\Helper($name, $this->namespace);
+        $gen = new Lib\Generator\Helper($settings, $name);
         // generate helper
         $this->createFile(
             $file,

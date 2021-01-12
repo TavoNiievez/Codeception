@@ -14,36 +14,28 @@ class GenerateSuiteTest extends BaseCommandRunner
     {
         $this->execute(array('suite' => 'shire', 'actor' => 'Hobbit'), false);
 
-        $configFile = $this->log[1];
+        $configFile = $this->log[0];
 
-        $this->assertEquals(\Codeception\Configuration::projectDir().'tests/shire.suite.yml', $configFile['filename']);
+        $this->assertEquals(\Codeception\Configuration::projectDir().'tests/Shire.suite.yml', $configFile['filename']);
         $conf = \Symfony\Component\Yaml\Yaml::parse($configFile['content']);
         $this->assertEquals('Hobbit', $conf['actor']);
-        $this->assertContains('\Helper\Shire', $conf['modules']['enabled']);
         $this->assertStringContainsString('Suite shire generated', $this->output);
 
-        $actor = $this->log[2];
+        $actor = $this->log[1];
         $this->assertEquals(\Codeception\Configuration::supportDir().'Hobbit.php', $actor['filename']);
         $this->assertStringContainsString('class Hobbit extends \Codeception\Actor', $actor['content']);
 
-
-        $helper = $this->log[0];
-        $this->assertEquals(\Codeception\Configuration::supportDir().'Helper/Shire.php', $helper['filename']);
-        $this->assertStringContainsString('namespace Helper;', $helper['content']);
-        $this->assertStringContainsString('class Shire extends \Codeception\Module', $helper['content']);
     }
 
     public function testGuyWithSuffix()
     {
         $this->execute(array('suite' => 'shire', 'actor' => 'HobbitTester'), false);
 
-        $configFile = $this->log[1];
+        codecept_debug($this->log);
+        
+        $configFile = $this->log[0];
         $conf = \Symfony\Component\Yaml\Yaml::parse($configFile['content']);
         $this->assertEquals('HobbitTester', $conf['actor']);
-        $this->assertContains('\Helper\Shire', $conf['modules']['enabled']);
 
-        $helper = $this->log[0];
-        $this->assertEquals(\Codeception\Configuration::supportDir().'Helper/Shire.php', $helper['filename']);
-        $this->assertStringContainsString('class Shire extends \Codeception\Module', $helper['content']);
     }
 }

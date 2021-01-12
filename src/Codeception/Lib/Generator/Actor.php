@@ -56,7 +56,8 @@ EOF;
 
     public function produce()
     {
-        $namespace = $this->supportNamespace();
+        
+        $namespace = trim($this->supportNamespace(), '\\');
 
         if (!isset($this->settings['actor']) && isset($this->settings['class_name'])) {
             $this->settings['actor'] = $this->settings['class_name'];

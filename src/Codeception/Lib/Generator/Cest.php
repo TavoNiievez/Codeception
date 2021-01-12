@@ -11,7 +11,9 @@ class Cest
     use Namespaces;
 
     protected $template = <<<EOF
-<?php {{namespace}}
+<?php 
+
+{{namespace}}
 
 class {{name}}Cest
 {
@@ -40,19 +42,13 @@ EOF;
     {
         $actor = $this->settings['actor'];
         if (!$actor) {
-            throw new ConfigurationException("Cept can't be created for suite without an actor. Add `actor: SomeTester` to suite config");
+            throw new ConfigurationException("Cest can't be created for suite without an actor. Add `actor: SomeTester` to suite config");
         }
 
-        if (array_key_exists('suite_namespace', $this->settings)) {
-            $namespace = rtrim($this->settings['suite_namespace'], '\\');
-        } else {
-            $namespace = rtrim($this->settings['namespace'], '\\');
-        }
+        $ns = $this->getNamespaceHeader($this->settings['namespace'] . '\\' . ucfirst($this->settings['suite']) . '\\' . $this->name);
 
-        $ns = $this->getNamespaceHeader($namespace.'\\'.$this->name);
-
-        if ($namespace) {
-            $ns .= "use ".$this->settings['namespace'].'\\'.$actor.";";
+        if ($ns) {
+            $ns .= "\nuse ". $this->supportNamespace() . $actor.";";
         }
 
         return (new Template($this->template))

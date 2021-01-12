@@ -2,6 +2,7 @@
 
 namespace Codeception\Template;
 
+use Codeception\Configuration;
 use Codeception\InitTemplate;
 use Symfony\Component\Yaml\Yaml;
 
@@ -13,13 +14,17 @@ class Bootstrap extends InitTemplate
     protected $envsDir = 'tests/_envs';
     protected $outputDir = 'tests/_output';
 
+    // default since v5
+    protected $namespace = 'Tests';
+    protected $supportNamespace = 'TestSupport';
+
     public function setup()
     {
         $this->checkInstalled($this->workDir);
 
         $input = $this->input;
         if ($input->getOption('namespace')) {
-            $this->namespace = trim($input->getOption('namespace'), '\\') . '\\';
+            $this->namespace = trim($input->getOption('namespace'), '\\');
         }
 
         if ($input->hasOption('actor') && $input->getOption('actor')) {
@@ -87,9 +92,9 @@ modules:
         # add a framework module here
     step_decorators: ~        
 EOF;
-        $this->createSuite('functional', $actor, $suiteConfig);
-        $this->say("tests/functional created           <- functional tests");
-        $this->say("tests/functional.suite.yml written <- functional tests suite configuration");
+        $this->createSuite('Functional', $actor, $suiteConfig);
+        $this->say("tests/Functional created           <- functional tests");
+        $this->say("tests/Functional.suite.yml written <- functional tests suite configuration");
     }
 
     protected function createAcceptanceSuite($actor = 'Acceptance')
@@ -134,6 +139,7 @@ EOF;
     public function createGlobalConfig()
     {
         $basicConfig = [
+            'support_namespace' => $this->supportNamespace,
             'paths'    => [
                 'tests'   => 'tests',
                 'output'  => $this->outputDir,
@@ -158,8 +164,10 @@ EOF;
 
     protected function createSuite($suite, $actor, $config)
     {
+        $settings = Yaml::parse($config);
+        $settings['support_namespace'] = $this->supportNamespace;
         $this->createDirectoryFor("tests/$suite", "$suite.suite.yml");
-        $this->createActor($actor . $this->actorSuffix, $this->supportDir, Yaml::parse($config));
+        $this->createActor($actor . $this->actorSuffix, $this->supportDir, $settings);
         $this->createFile('tests' . DIRECTORY_SEPARATOR . "$suite.suite.yml", $config);
     }
 }

@@ -69,6 +69,7 @@ class Configuration
         'actor_suffix'=> 'Tester',
         'support_namespace' => null,
         'namespace'  => '',
+
         'include'    => [],
         'paths'      => [],
         'extends'    => null,
@@ -118,7 +119,6 @@ class Configuration
         'path'        => null,
         'extends'     => null,
         'namespace'   => null,
-        'support_namespace' => null,
         'groups'      => [],
         'formats'     => [],
         'shuffle'     => false,
@@ -254,7 +254,7 @@ class Configuration
             self::$envsDir = $config['paths']['envs'];
         }
 
-        Autoload::addNamespace(self::$config['namespace'] . '\\' . self::$config['support_namespace'] , self::supportDir());
+        Autoload::addNamespace(self::$config['namespace'] . '\\' . self::$config['support_namespace'], self::supportDir());
 
         self::loadBootstrap($config['bootstrap'], self::testsDir());
         self::loadSuites();
@@ -327,6 +327,7 @@ class Configuration
                 $globalConf[$key] = $config[$key];
             }
         }
+
         $settings = self::mergeConfigs(self::$defaultSuiteSettings, $globalConf);
 
         // load suite config
@@ -352,7 +353,8 @@ class Configuration
         $settings['path'] = self::$dir . DIRECTORY_SEPARATOR . $config['paths']['tests']
             . DIRECTORY_SEPARATOR . $settings['path'] . DIRECTORY_SEPARATOR;
 
-
+        $settings['suite'] = $suite;
+        $settings['suite_namespace'] = $settings['namespace'] . '\\' . $suite;
 
         return $settings;
     }

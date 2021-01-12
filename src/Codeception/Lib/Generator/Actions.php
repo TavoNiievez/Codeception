@@ -4,12 +4,15 @@ namespace Codeception\Lib\Generator;
 use Codeception\Codecept;
 use Codeception\Configuration;
 use Codeception\Lib\Di;
+use Codeception\Lib\Generator\Shared\Classname;
 use Codeception\Lib\ModuleContainer;
 use Codeception\Util\ReflectionHelper;
 use Codeception\Util\Template;
 
 class Actions
 {
+
+    use Classname;
 
     protected $template = <<<EOF
 <?php  //[STAMP] {{hash}}
@@ -74,7 +77,7 @@ EOF;
 
     public function produce()
     {
-        $namespace = rtrim($this->settings['namespace'], '\\');
+        $namespace = trim($this->supportNamespace(), '\\');
 
         $methods = [];
         $code = [];

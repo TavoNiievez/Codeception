@@ -68,7 +68,7 @@ EOF;
         }
 
         $actor = lcfirst($this->settings['actor']);
-        $actorClass = $this->supportNamespace() . '\\' . $this->settings['actor'];
+        $actorClass = ltrim($this->supportNamespace() . $this->settings['actor'], '\\');
 
         return (new Template($this->actionsTemplate))
             ->place('actorClass', $actorClass)

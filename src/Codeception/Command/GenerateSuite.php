@@ -71,34 +71,19 @@ class GenerateSuite extends Command
             );
         }
 
-        $helperName = ucfirst($suite);
-
-        $file = $this->createDirectoryFor(
-            Configuration::supportDir() . "Helper",
-            "$helperName.php"
-        ) . "$helperName.php";
-
-        $gen = new Helper($helperName, $config['namespace']);
-        // generate helper
-        $this->createFile(
-            $file,
-            $gen->produce()
-        );
-
-        $output->writeln("Helper <info>" . $gen->getHelperName() . "</info> was created in $file");
-
         $yamlSuiteConfigTemplate = <<<EOF
 actor: {{actor}}
+suite_namespace: {{suite_namespace}}
 modules:
-    enabled:
-        - {{helper}}
+    # enable helpers as array
+    enabled: []
 EOF;
 
         $this->createFile(
-            $dir . $suite . '.suite.yml',
+            $dir . ucfirst($suite) . '.suite.yml',
             $yamlSuiteConfig = (new Template($yamlSuiteConfigTemplate))
                 ->place('actor', $actor)
-                ->place('helper', $gen->getHelperName())
+                ->place('suite_namespace', $config['namespace']. '\\' . ucfirst($suite))
                 ->produce()
         );
 

@@ -12,6 +12,7 @@ class Snapshot
 
     protected $template = <<<EOF
 <?php
+
 namespace {{namespace}};
 
 class {{name}} extends \\Codeception\\Snapshot
@@ -46,7 +47,7 @@ EOF;
     {
         $this->settings = $settings;
         $this->name = $this->getShortClassName($name);
-        $this->namespace = $this->getNamespaceString($this->supportNamespace() . '\\Snapshot\\' . $name);
+        $this->namespace = $this->getNamespaceString($this->supportNamespace() . 'Snapshot\\' . $name);
     }
 
     public function produce()
@@ -65,7 +66,7 @@ EOF;
         }
 
         $actor = lcfirst($this->settings['actor']);
-        $actorClass = rtrim($this->supportNamespace(), '\\') . '\\' . $this->settings['actor'];
+        $actorClass = rtrim($this->supportNamespace(), '\\') . $this->settings['actor'];
 
         return (new Template($this->actionsTemplate))
             ->place('actorClass', $actorClass)

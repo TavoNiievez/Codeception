@@ -12,7 +12,7 @@ trait Classname
     protected function supportNamespace()
     {
         if (!isset($this->settings)) {
-            return "";
+            return "\\";
         }
 
         $namespace = "";
@@ -21,9 +21,9 @@ trait Classname
             $namespace .= '\\' . $this->settings['namespace'];
         }
 
-        if ($this->settings['support_namespace']) {
+        if (isset($this->settings['support_namespace'])) {
             $namespace .= '\\' . $this->settings['support_namespace'];
         }
-        return rtrim($namespace, '\\');
+        return rtrim($namespace, '\\') . '\\';
     }
 }

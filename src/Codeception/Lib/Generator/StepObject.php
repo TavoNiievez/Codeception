@@ -12,6 +12,7 @@ class StepObject
 
     protected $template = <<<EOF
 <?php
+
 namespace {{namespace}};
 
 class {{name}} extends {{actorClass}}
@@ -37,7 +38,7 @@ EOF;
     {
         $this->settings = $settings;
         $this->name = $this->getShortClassName($name);
-        $this->namespace = $this->getNamespaceString($this->supportNamespace() . '\\Step\\' . $name);
+        $this->namespace = $this->getNamespaceString($this->supportNamespace() . 'Step\\' . $name);
     }
 
     public function produce()
@@ -47,7 +48,7 @@ EOF;
             throw new ConfigurationException("Steps can't be created for suite without an actor");
         }
 
-        $extended = '\\' . ltrim($this->supportNamespace() . '\\' . $actor, '\\');
+        $extended = '\\' . ltrim($this->supportNamespace() . $actor, '\\');
 
         return (new Template($this->template))
             ->place('namespace', $this->namespace)

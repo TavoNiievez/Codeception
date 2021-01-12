@@ -11,15 +11,14 @@ class Test
     use Shared\Classname;
 
     protected $template = <<<EOF
-<?php {{namespace}}
+<?php 
+
+{{namespace}}
+
 class {{name}}Test extends \Codeception\Test\Unit
 {
 {{tester}}
     protected function _before()
-    {
-    }
-
-    protected function _after()
     {
     }
 
@@ -32,10 +31,8 @@ class {{name}}Test extends \Codeception\Test\Unit
 EOF;
 
     protected $testerTemplate = <<<EOF
-    /**
-     * @var \{{actorClass}}
-     */
-    protected \${{actor}};
+
+    protected {{actorClass}} \${{actor}};
     
 EOF;
 
@@ -52,11 +49,13 @@ EOF;
     public function produce()
     {
         $actor = $this->settings['actor'];
-        if ($this->settings['namespace']) {
-            $actor = $this->settings['namespace'] . '\\' . $actor;
+
+        $ns = $this->getNamespaceHeader($this->settings['namespace'] . '\\' . ucfirst($this->settings['suite']) . '\\' . $this->name);
+
+        if ($ns) {
+            $ns .= "\nuse ". $this->supportNamespace() . $actor.";";
         }
 
-        $ns = $this->getNamespaceHeader($this->settings['namespace'] . '\\' . $this->name);
 
         $tester = '';
         if ($this->settings['actor']) {
